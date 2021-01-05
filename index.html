@@ -14,11 +14,15 @@
   PinterUsaha
 </title>
 
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 <link
   rel="stylesheet"
-  href="https://js.arcgis.com/4.18/esri/themes/light/main.css"
-/>
+  href="https://js.arcgis.com/4.18/esri/themes/light/main.css"/>
 <script src="https://js.arcgis.com/4.18/"></script>
+
 
 <style>
   html,
@@ -31,23 +35,24 @@
   }
 
   #subs-filter {
-    height: 80px;
-    width: 120px;
-    font-size: 13pt;
+    width: 150px;
+    position: absolute;
+    z-index: 99;
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px;
     opacity: 0.75;
-    visibility: hidden; 
   }
 
   #class-filter {
     height: 160px;
     width: 150px;
-    font-size: 13pt;
     opacity: 0.75;
     visibility: hidden; 
   }
 
   #layerToggle {
-    width: 180px;
+    width: 200px;
     position: absolute;
     z-index: 99;
     background-color: white;
@@ -60,12 +65,6 @@
     padding: 10px;
   }
 
-  #titleText {
-    font-size: 20pt;
-    font-weight: 60;
-    padding-bottom: 10px;
-  }
-
   #infoDiv {
     padding: 10px;
   }
@@ -73,7 +72,21 @@
   #basemapDiv {
     padding: 10px;
   }
+
+  #daterange{
+    padding: 10px;
+  }
 </style>
+
+<!-- <script type="text/javascript" name = "dateRange">
+  $(function() {
+    $('input[name="dateRange"]').daterangepicker({
+      opens: 'left'
+    }, function(start, end, label) {
+      console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+    });
+});
+</script> -->
 
 <script type="text/arcgis-arcade" id="countSubsribe">
   var portal = Portal('https://wellcode.maps.arcgis.com/');
@@ -138,18 +151,17 @@
     "esri/layers/FeatureLayer",
     "esri/widgets/Expand",
     "esri/widgets/Legend",
-    "esri/layers/WMTSLayer",
     "esri/widgets/BasemapGallery",
     "esri/renderers/UniqueValueRenderer",
     "esri/symbols/SimpleFillSymbol",
     "esri/symbols/SimpleLineSymbol",
-    "esri/Color",
-    // "esri/geometry/geometryEngine"
-    // "dojo/on",
-    // "dojo/dom",
-    // "dojo/domReady!"
-  ], function (MapView, Map, FeatureLayer, Expand, Legend, WMTSLayer, BasemapGallery,
-  UniqueValueRenderer, SimpleFillSymbol, SimpleLineSymbol, Color) {
+    "esri/renderers/SimpleRenderer",
+    "esri/symbols/PictureMarkerSymbol",
+    "esri/symbols/SimpleMarkerSymbol",
+    "esri/widgets/Search",
+    "esri/widgets/support/DatePicker",
+  ], function (MapView, Map, FeatureLayer, Expand, Legend, BasemapGallery,
+  UniqueValueRenderer, SimpleFillSymbol, SimpleLineSymbol, SimpleRenderers, PictureMarkerSymbol, SimpleMarkerSymbol, Search, DatePicker) {
 
     let floodLayerView;
 
@@ -158,41 +170,12 @@
     const arcadeCountUnsubscribe = document.getElementById("countUnsubscribe").text;
     const arcadeCountPercentageSubs = document.getElementById("persenSub").text;
     //-------------/call arcade function-------------------------------------
-
-    //--------------------color selection batas wilayah------------------------
-    // var fill = {
-    //   type: "simple-fill",
-    //   outline: { cap: "round" },
-    //   color: [124, 26, 26, 0.4]
-    // };
-
-    // var fill2 = {
-    //   type: "simple-fill",
-    //   outline: { cap: "round" },
-    //   color: [26, 41, 124, 0.4]
-    // };
-
-    // const renderBatas = new UniqueValueRenderer({
-    //   ValueExpression: arcadeCountPercentageSubs,
-    //   ValueExpressionTitle: "Percentage Subscriber",
-    //   uniqueValueInfos: [{
-    //     value: "subs",
-    //     symbol: fill,
-    //     label: ">50% subsriber"
-    //   },
-    //   {
-    //     value: "unsubs",
-    //     symbol: fill2,
-    //     label: "<50% subsriber"
-    //   }] 
-    // });
-    //--------------------/color selection batas wilayah------------------------
     
     //--------------cluster----------------------------
     const clusterMerchant = {
       type: "cluster",
       clusterRadius: "100px",
-      clusterMinSize: "24px",
+      clusterMinSize: "15px",
       clusterMaxSize: "40px",
       popupTemplate: {
         content: "This cluster represents {cluster_count} points.",
@@ -214,7 +197,7 @@
           },
           symbol: {
             type: "text",
-            color: "#004a5d",
+            color: "white",
             font: {
               weight: "bold",
               family: "Noto Sans",
@@ -226,13 +209,80 @@
       ]
     };
     //--------------/cluster----------------------------
+    
+    // const symbolUmkm = new PictureMarkerSymbol({
+    //   // style: "square",
+    //   url: "/chakrawrasand.github.io/symbol/shop.svg",
+    // })
 
-    //------------- call mapservice layer & arcade count -------------------
+    // const renderSymbol = new UniqueValueRenderer({
+    //   field: "nama_kategori",
+    //   defaultSymbol: symbolUmkm,
+    //   uniqueValueInfos: [{
+    //     value: "Cafe",
+    //     symbol: {
+    //       type: "simple-fill",
+    //       color: "blue"
+    //     }
+    //   }, {
+    //     value: "Peternakan",
+    //     symbol: {
+    //       type: "simple-fill",
+    //       color: "green"
+    //     }
+    //   }, {
+    //     value: "Katering",
+    //     symbol: {
+    //       type: "simple-fill",
+    //       color: "red"
+    //     }
+    //   }, {
+    //     value: "Pertanian",
+    //     symbol: {
+    //       type: "simple-fill",  
+    //       color: "yellow"
+    //     }
+    //   }],
+    // });
+
     const merchantPinterusaha = new FeatureLayer({
-      url: "https://services8.arcgis.com/wBvuoeoWzAINzB8k/arcgis/rest/services/merchant/FeatureServer/0",
+      url: "https://services9.arcgis.com/13g8O389lHpxGSjb/arcgis/rest/services/merchant_pinterusaha/FeatureServer/0",
       popupTemplate: {
         title: "{Nama}",
-        content: "{Location}",
+        content: [
+          {
+            type: "fields",
+            fieldInfos:[
+              {
+                fieldName: "Location",
+                label: "Alamat Usaha",
+                isEditable: true,
+                tooltip: "",
+                visible: true,
+                format: null,
+                stringFieldOption: "text-box"
+              },
+              {
+                fieldName: "klasifikas",
+                label: "Klasifikasi Bisnis",
+                isEditable: true,
+                tooltip: "",
+                visible: true,
+                format: null,
+                stringFieldOption: "text-box"
+              },
+              {
+                fieldName: "subscribe",
+                label: "Subscription Status",
+                isEditable: true,
+                tooltip: "",
+                visible: true,
+                format: null,
+                stringFieldOption: "text-box"
+              },
+            ]
+          }
+        ]
       },
       outfields: ['*'],
       featureReduction: clusterMerchant,
@@ -309,57 +359,60 @@
     });
 
     const dataUmkm = new FeatureLayer({
-      url: "https://services8.arcgis.com/wBvuoeoWzAINzB8k/arcgis/rest/services/umkm__/FeatureServer/0",
+      url: "https://services9.arcgis.com/13g8O389lHpxGSjb/arcgis/rest/services/dataUmkm/FeatureServer/0",
       featureReduction: clusterMerchant,
       outfields: ["*"],
+      // renderer: renderSymbol,
       popupTemplate: {
         title: "{nama_usaha}",
         content: [
-            {
-              type: "fields",
-              fieldInfos:[
-                {
-                  fieldName: "nama_kategori",
-                  label: "Kategori Usaha",
-                  isEditable: true,
-                  tooltip: "",
-                  visible: true,
-                  format: null,
-                  stringFieldOption: "text-box"
-                },
-                {
-                  fieldName: "alamat_usaha",
-                  label: "Alamat Usaha",
-                  isEditable: true,
-                  tooltip: "",
-                  visible: true,
-                  format: null,
-                  stringFieldOption: "text-box"
-                },
-                {
-                  fieldName: "nama_pemilik",
-                  label: "Nama Pemilik",
-                  isEditable: true,
-                  tooltip: "",
-                  visible: true,
-                  format: null,
-                  stringFieldOption: "text-box"
-                },
-                {
-                  fieldName: "no_hp",
-                  label: "No. Handpohone Pemilik",
-                  isEditable: true,
-                  tooltip: "",
-                  visible: true,
-                  format: null,
-                  stringFieldOption: "text-box"
-                },
-              ]
-            }]},
+          {
+            type: "fields",
+            fieldInfos:[
+              {
+                fieldName: "nama_kategori",
+                label: "Kategori Usaha",
+                isEditable: true,
+                tooltip: "",
+                visible: true,
+                format: null,
+                stringFieldOption: "text-box"
+              },
+              {
+                fieldName: "alamat_usaha",
+                label: "Alamat Usaha",
+                isEditable: true,
+                tooltip: "",
+                visible: true,
+                format: null,
+                stringFieldOption: "text-box"
+              },
+              {
+                fieldName: "nama_pemilik",
+                label: "Nama Pemilik",
+                isEditable: true,
+                tooltip: "",
+                visible: true,
+                format: null,
+                stringFieldOption: "text-box"
+              },
+              {
+                fieldName: "no_hp",
+                label: "No. Handpohone Pemilik",
+                isEditable: true,
+                tooltip: "",
+                visible: true,
+                format: null,
+                stringFieldOption: "text-box"
+              },
+            ]
+          }
+        ]
+      },
     });
 
     const map = new Map({
-      basemap: "streets-night-vector",
+      basemap: "streets-navigation-vector",
       layers: [merchantPinterusaha, dataUmkm, batasKecamatan, batasKota, batasProvinsi]
     });
     
@@ -375,6 +428,27 @@
       }
     });
 
+    // const dateRangePicker =
+    //   $('input[name="datefilter"]').daterangepicker({
+    //     startDate: "12/30/2020",
+    //     endDate: "01/05/2021",
+    //     autoUpdateInput: false,
+    //   });
+    //   $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+    //     $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+    //   });
+    
+    // const dateRangeDiv = document.getElementById("dateRangeDiv");
+    // view.ui.add(
+    //   new Expand({
+    //     view: view,
+    //     content: dateRangeDiv,
+    //     expandIconClass: "esri-icon-basemap",
+    //     expanded: false
+    //   }),
+    //   "top-right"
+    // );
+
     //------------- toggle by area -------------------
     var batasKotaToggle = document.getElementById("batasKota");
     batasKotaToggle.addEventListener("change", function () {
@@ -389,6 +463,16 @@
     var batasProvinsiToggle = document.getElementById("batasProvinsi");
     batasProvinsiToggle.addEventListener("change", function () {
       batasProvinsi.visible = batasProvinsiToggle.checked;
+    });
+
+    var merchantPinterusahaToggle = document.getElementById("merchantPinterusaha");
+    merchantPinterusahaToggle.addEventListener("change", function () {
+      merchantPinterusaha.visible = merchantPinterusahaToggle.checked;
+    });
+
+    var dataUmkmToggle = document.getElementById("dataUmkm");
+    dataUmkmToggle.addEventListener("change", function () {
+      dataUmkm.visible = dataUmkmToggle.checked;
     });
 
     const batasAreaToggle = document.getElementById("layerToggle");
@@ -423,7 +507,7 @@
         const actived = subStatuses[i].checked;
         if(actived){
           params1.push("subscribe = '" + value + "'");
-          params2.push("klasifikasi = '" + classValue + "'");
+          params2.push("klasifikas = '" + classValue + "'");
         }
         let remove = [
           "klasifikasi = 'undefined'", "subscribe = 'undefined'"
@@ -441,6 +525,7 @@
         where: query
       };
     }
+    // debugger;
 
     view.whenLayerView(merchantPinterusaha).then(function(layerView){
       floodLayerView = layerView;
@@ -500,6 +585,30 @@
     //--------------/change basemap--------------------------------
 
     //-------------------Map Legend & Disable/Enable Clustering---------------------
+    const searchWidget = new Search({
+      view: view,
+      sources: [
+        {
+          layer: dataUmkm,
+          searchFields: ["nama_usaha"],
+          displayField: "nama_usaha",
+          exactMatch: false,
+          name: "Nama Usaha",
+          placeholder: "Toko ABC",
+          zoomScale: 7000,
+          maxSuggestions: 10,
+        },
+      ],
+      includeDefaultSources: false,
+      locationEnable: false,
+      minSuggestCharacters: 3,
+    });
+  
+    view.ui.add(searchWidget, {
+      position: "top-right",
+      index: 0,
+    });
+    
     const legend = new Legend({
       view: view,
       container: "legendDiv",
@@ -570,19 +679,22 @@
   <input type="checkbox" class="class-merchant visible-status" data-class-merchant="Produk" checked>Product<br>
   <input type="checkbox" class="class-merchant visible-status" data-class-merchant="Kementerian" checked>Ministry
 </div>
+<!-- <div id=dateRangeDiv class="esri-widget">
+  <input type="text" name="datefilter" value=""/>
+</div> -->
 <div id="viewDiv"></div>
 <div id="titleDiv" class="esri-widget">
   <span id="layerToggle" class="esri-widget">
     <input type="checkbox" id="batasKecamatan" /> Batas Kecamatan<br>
     <input type="checkbox" id="batasKota" /> Batas Kota atau Kabupaten<br>
-    <input type="checkbox" id="batasProvinsi" /> Batas Provinsi
+    <input type="checkbox" id="batasProvinsi" /> Batas Provinsi<br>
+    <input type="checkbox" id="merchantPinterusaha" checked/> Merchant Terdaftar Pinterusaha<br>
+    <input type="checkbox" id="dataUmkm" checked/> Database UMKM<br>
 </div>
 <div id="infoDiv" class="esri-widget">
   <button id="cluster" class="esri-button">Disable Clustering</button>
   <div id="legendDiv"></div>
 </div>
-<div id="basemapDiv" class="esri-widget">
-  <div id="basemapDiv"></div>
-</div>
+<div id="basemapDiv" class="esri-widget"></div>
 </body>
 </html>
