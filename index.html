@@ -290,75 +290,75 @@
       featureReduction: clusterMerchant,
     });
     
-    const batasKecamatan = new FeatureLayer({
-      url: "http://gis.dukcapil.kemendagri.go.id:6080/arcgis/rest/services/Data_022016_25082017/MapServer/2", 
-      popupTemplate: {
-        title: " PinterUsaha pada {giskemendagri.gisadmin.Kecamatan_Tabel_06072017.nama_kec_s}, {giskemendagri.gisadmin.Kecamatan_Tabel_06072017.nama_kab_s} ",
-        content: "Subscribe = " + "{expression/count-subsribe}" + ", Unsubscribe = " + "{expression/count-unsubscribe}"
-        + ", Percentage Subsriber = " + "{expression/percent-subs}%",
-        expressionInfos: [
-          {
-            name: "count-subsribe",
-            title: "Jumlah Subsribe",
-            expression: arcadeCountSubscribe
-          },
-          {
-            name: "count-unsubscribe",
-            title: "Jumlah Unsubscribe",
-            expression: arcadeCountUnsubscribe
-          },
-          {
-            name: "percent-subs",
-            title: "percentage subsriber",
-            expression: arcadeCountPercentageSubs
-          }
-        ]
-      },
-      // renderer: renderBatas,
-      visible: false,
-    });
+    // const batasKecamatan = new FeatureLayer({
+    //   url: "http://gis.dukcapil.kemendagri.go.id:6080/arcgis/rest/services/Data_022016_25082017/MapServer/2", 
+    //   popupTemplate: {
+    //     title: " PinterUsaha pada {giskemendagri.gisadmin.Kecamatan_Tabel_06072017.nama_kec_s}, {giskemendagri.gisadmin.Kecamatan_Tabel_06072017.nama_kab_s} ",
+    //     content: "Subscribe = " + "{expression/count-subsribe}" + ", Unsubscribe = " + "{expression/count-unsubscribe}"
+    //     + ", Percentage Subsriber = " + "{expression/percent-subs}%",
+    //     expressionInfos: [
+    //       {
+    //         name: "count-subsribe",
+    //         title: "Jumlah Subsribe",
+    //         expression: arcadeCountSubscribe
+    //       },
+    //       {
+    //         name: "count-unsubscribe",
+    //         title: "Jumlah Unsubscribe",
+    //         expression: arcadeCountUnsubscribe
+    //       },
+    //       {
+    //         name: "percent-subs",
+    //         title: "percentage subsriber",
+    //         expression: arcadeCountPercentageSubs
+    //       }
+    //     ]
+    //   },
+    //   // renderer: renderBatas,
+    //   visible: false,
+    // });
 
-    const batasKota = new FeatureLayer({
-      url: "http://gis.dukcapil.kemendagri.go.id:6080/arcgis/rest/services/Data_022016_25082017/MapServer/1", 
-      popupTemplate: {
-        title: " PinterUsaha pada {giskemendagri.gisadmin.Kabupaten_Tabel_06072017.nama_kab_s}, {giskemendagri.gisadmin.Kabupaten_Tabel_06072017.nama_prop_}",
-        content: "Subscribe = " + "{expression/count-subsribe}" + ", Unsubscribe = " + "{expression/count-unsubscribe}",
-        expressionInfos: [
-          {
-            name: "count-subsribe",
-            title: "Jumlah Subsribe",
-            expression: arcadeCountSubscribe
-          },
-          {
-            name: "count-unsubscribe",
-            title: "Jumlah Unsubscribe",
-            expression: arcadeCountUnsubscribe
-          },
-        ]
-      },
-      visible: false,
-    });
+    // const batasKota = new FeatureLayer({
+    //   url: "http://gis.dukcapil.kemendagri.go.id:6080/arcgis/rest/services/Data_022016_25082017/MapServer/1", 
+    //   popupTemplate: {
+    //     title: " PinterUsaha pada {giskemendagri.gisadmin.Kabupaten_Tabel_06072017.nama_kab_s}, {giskemendagri.gisadmin.Kabupaten_Tabel_06072017.nama_prop_}",
+    //     content: "Subscribe = " + "{expression/count-subsribe}" + ", Unsubscribe = " + "{expression/count-unsubscribe}",
+    //     expressionInfos: [
+    //       {
+    //         name: "count-subsribe",
+    //         title: "Jumlah Subsribe",
+    //         expression: arcadeCountSubscribe
+    //       },
+    //       {
+    //         name: "count-unsubscribe",
+    //         title: "Jumlah Unsubscribe",
+    //         expression: arcadeCountUnsubscribe
+    //       },
+    //     ]
+    //   },
+    //   visible: false,
+    // });
 
-    const batasProvinsi = new FeatureLayer({
-      url: "http://gis.dukcapil.kemendagri.go.id:6080/arcgis/rest/services/Data_022016_25082017/MapServer/0",
-      popupTemplate: {
-        title: " PinterUsaha pada Provinsi {giskemendagri.gisadmin.Provinsi_baru.provinsi}",
-        content: "Subscribe = " + "{expression/count-subsribe}" + ", Unsubscribe = " + "{expression/count-unsubscribe}",
-        expressionInfos: [
-          {
-            name: "count-subsribe",
-            title: "Jumlah Subsribe",
-            expression: arcadeCountSubscribe
-          },
-          {
-            name: "count-unsubscribe",
-            title: "Jumlah Unsubscribe",
-            expression: arcadeCountUnsubscribe
-          },
-        ]
-      },
-      visible: false,
-    });
+    // const batasProvinsi = new FeatureLayer({
+    //   url: "http://gis.dukcapil.kemendagri.go.id:6080/arcgis/rest/services/Data_022016_25082017/MapServer/0",
+    //   popupTemplate: {
+    //     title: " PinterUsaha pada Provinsi {giskemendagri.gisadmin.Provinsi_baru.provinsi}",
+    //     content: "Subscribe = " + "{expression/count-subsribe}" + ", Unsubscribe = " + "{expression/count-unsubscribe}",
+    //     expressionInfos: [
+    //       {
+    //         name: "count-subsribe",
+    //         title: "Jumlah Subsribe",
+    //         expression: arcadeCountSubscribe
+    //       },
+    //       {
+    //         name: "count-unsubscribe",
+    //         title: "Jumlah Unsubscribe",
+    //         expression: arcadeCountUnsubscribe
+    //       },
+    //     ]
+    //   },
+    //   visible: false,
+    // });
 
     const dataUmkm = new FeatureLayer({
       url: "https://services9.arcgis.com/13g8O389lHpxGSjb/arcgis/rest/services/dataUmkm/FeatureServer/0",
@@ -415,7 +415,7 @@
 
     const map = new Map({
       basemap: "streets-navigation-vector",
-      layers: [merchantPinterusaha, dataUmkm, batasKecamatan, batasKota, batasProvinsi]
+      layers: [merchantPinterusaha, dataUmkm]
     });
     
     //------------- /call mapservice layer & arcade count -------------------
@@ -428,43 +428,6 @@
       ui: {
         components: ["attribution"]
       }
-    });
-
-    // const dateRangePicker =
-    //   $('input[name="datefilter"]').daterangepicker({
-    //     startDate: "12/30/2020",
-    //     endDate: "01/05/2021",
-    //     autoUpdateInput: false,
-    //   });
-    //   $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
-    //     $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
-    //   });
-    
-    // const dateRangeDiv = document.getElementById("dateRangeDiv");
-    // view.ui.add(
-    //   new Expand({
-    //     view: view,
-    //     content: dateRangeDiv,
-    //     expandIconClass: "esri-icon-basemap",
-    //     expanded: false
-    //   }),
-    //   "top-right"
-    // );
-
-    //------------- toggle by area -------------------
-    var batasKotaToggle = document.getElementById("batasKota");
-    batasKotaToggle.addEventListener("change", function () {
-      batasKota.visible = batasKotaToggle.checked;
-    });
-
-    var batasKecamatanToggle = document.getElementById("batasKecamatan");
-    batasKecamatanToggle.addEventListener("change", function () {
-      batasKecamatan.visible = batasKecamatanToggle.checked;
-    });
-
-    var batasProvinsiToggle = document.getElementById("batasProvinsi");
-    batasProvinsiToggle.addEventListener("change", function () {
-      batasProvinsi.visible = batasProvinsiToggle.checked;
     });
 
     var merchantPinterusahaToggle = document.getElementById("merchantPinterusaha");
@@ -539,12 +502,6 @@
         expandIconClass: "esri-icon-filter",
         group: "top-left"
       });
-
-      // // subsExpand.watch("expanded", function(){
-      // //   if(!subsExpand.expanded){
-      // //     floodLayerView.filter = null;
-      // //   }
-      // });
       view.ui.add(subsExpand, "top-left");
     });
       
@@ -595,8 +552,14 @@
           searchFields: ["nama_usaha"],
           displayField: "nama_usaha",
           exactMatch: false,
-          name: "Nama Usaha",
-          placeholder: "Toko ABC",
+          zoomScale: 7000,
+          maxSuggestions: 10,
+        },
+        {
+          layer: merchantPinterusaha,
+          searchFields: ["Nama"],
+          displayField: "Nama",
+          exactMatch: false,
           zoomScale: 7000,
           maxSuggestions: 10,
         },
@@ -622,18 +585,6 @@
         {
           layer: merchantPinterusaha,
           title: "Database Pinterusaha",
-        },
-        {
-          layer: batasKecamatan,
-          title: "Batas Kecamatan",
-        },
-        {
-          layer: batasKota,
-          title: "Batas Kota/ Kabupaten",
-        },
-        {
-          layer: batasProvinsi,
-          title: "Batas Provinsi",
         },
       ]
     });
@@ -687,9 +638,9 @@
 <div id="viewDiv"></div>
 <div id="titleDiv" class="esri-widget">
   <span id="layerToggle" class="esri-widget">
-    <input type="checkbox" id="batasKecamatan" /> Batas Kecamatan<br>
+    <!-- <input type="checkbox" id="batasKecamatan" /> Batas Kecamatan<br>
     <input type="checkbox" id="batasKota" /> Batas Kota atau Kabupaten<br>
-    <input type="checkbox" id="batasProvinsi" /> Batas Provinsi<br>
+    <input type="checkbox" id="batasProvinsi" /> Batas Provinsi<br> -->
     <input type="checkbox" id="merchantPinterusaha" checked/> Merchant Terdaftar Pinterusaha<br>
     <input type="checkbox" id="dataUmkm" checked/> Database UMKM<br>
 </div>
