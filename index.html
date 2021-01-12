@@ -161,9 +161,9 @@
     "esri/symbols/PictureMarkerSymbol",
     "esri/symbols/SimpleMarkerSymbol",
     "esri/widgets/Search",
-    "esri/widgets/support/DatePicker",
+    "esri/layers/GeoJSONLayer",
   ], function (MapView, Map, FeatureLayer, Expand, Legend, BasemapGallery,
-  UniqueValueRenderer, SimpleFillSymbol, SimpleLineSymbol, SimpleRenderers, PictureMarkerSymbol, SimpleMarkerSymbol, Search, DatePicker) {
+  UniqueValueRenderer, SimpleFillSymbol, SimpleLineSymbol, SimpleRenderers, PictureMarkerSymbol, SimpleMarkerSymbol, Search, GeoJSONLayer) {
 
     let floodLayerView;
 
@@ -171,8 +171,7 @@
     const arcadeCountSubscribe = document.getElementById("countSubsribe").text;
     const arcadeCountUnsubscribe = document.getElementById("countUnsubscribe").text;
     const arcadeCountPercentageSubs = document.getElementById("persenSub").text;
-    //-------------/call arcade function-------------------------------------
-    
+      
     //--------------cluster----------------------------
     const clusterMerchant = {
       type: "cluster",
@@ -210,43 +209,8 @@
         }
       ]
     };
-    //--------------/cluster----------------------------
     
-    // const symbolUmkm = new PictureMarkerSymbol({
-    //   // style: "square",
-    //   url: "/chakrawrasand.github.io/symbol/shop.svg",
-    // })
-
-    // const renderSymbol = new UniqueValueRenderer({
-    //   field: "nama_kategori",
-    //   defaultSymbol: symbolUmkm,
-    //   uniqueValueInfos: [{
-    //     value: "Cafe",
-    //     symbol: {
-    //       type: "simple-fill",
-    //       color: "blue"
-    //     }
-    //   }, {
-    //     value: "Peternakan",
-    //     symbol: {
-    //       type: "simple-fill",
-    //       color: "green"
-    //     }
-    //   }, {
-    //     value: "Katering",
-    //     symbol: {
-    //       type: "simple-fill",
-    //       color: "red"
-    //     }
-    //   }, {
-    //     value: "Pertanian",
-    //     symbol: {
-    //       type: "simple-fill",  
-    //       color: "yellow"
-    //     }
-    //   }],
-    // });
-
+    //----------------------------layer----------------------
     const merchantPinterusaha = new FeatureLayer({
       url: "https://services9.arcgis.com/13g8O389lHpxGSjb/arcgis/rest/services/merchant_pinterusaha/FeatureServer/0",
       popupTemplate: {
@@ -290,81 +254,80 @@
       featureReduction: clusterMerchant,
     });
     
-    // const batasKecamatan = new FeatureLayer({
-    //   url: "http://gis.dukcapil.kemendagri.go.id:6080/arcgis/rest/services/Data_022016_25082017/MapServer/2", 
-    //   popupTemplate: {
-    //     title: " PinterUsaha pada {giskemendagri.gisadmin.Kecamatan_Tabel_06072017.nama_kec_s}, {giskemendagri.gisadmin.Kecamatan_Tabel_06072017.nama_kab_s} ",
-    //     content: "Subscribe = " + "{expression/count-subsribe}" + ", Unsubscribe = " + "{expression/count-unsubscribe}"
-    //     + ", Percentage Subsriber = " + "{expression/percent-subs}%",
-    //     expressionInfos: [
-    //       {
-    //         name: "count-subsribe",
-    //         title: "Jumlah Subsribe",
-    //         expression: arcadeCountSubscribe
-    //       },
-    //       {
-    //         name: "count-unsubscribe",
-    //         title: "Jumlah Unsubscribe",
-    //         expression: arcadeCountUnsubscribe
-    //       },
-    //       {
-    //         name: "percent-subs",
-    //         title: "percentage subsriber",
-    //         expression: arcadeCountPercentageSubs
-    //       }
-    //     ]
-    //   },
-    //   // renderer: renderBatas,
-    //   visible: false,
-    // });
+    const batasKecamatan = new FeatureLayer({
+      url: "http://gis.dukcapil.kemendagri.go.id:6080/arcgis/rest/services/Data_022016_25082017/MapServer/2", 
+      popupTemplate: {
+        title: " PinterUsaha pada {giskemendagri.gisadmin.Kecamatan_Tabel_06072017.nama_kec_s}, {giskemendagri.gisadmin.Kecamatan_Tabel_06072017.nama_kab_s} ",
+        content: "Subscribe = " + "{expression/count-subsribe}" + ", Unsubscribe = " + "{expression/count-unsubscribe}"
+        + ", Percentage Subsriber = " + "{expression/percent-subs}%",
+        expressionInfos: [
+          {
+            name: "count-subsribe",
+            title: "Jumlah Subsribe",
+            expression: arcadeCountSubscribe
+          },
+          {
+            name: "count-unsubscribe",
+            title: "Jumlah Unsubscribe",
+            expression: arcadeCountUnsubscribe
+          },
+          {
+            name: "percent-subs",
+            title: "percentage subsriber",
+            expression: arcadeCountPercentageSubs
+          }
+        ]
+      },
+      // renderer: renderBatas,
+      visible: false,
+    });
 
-    // const batasKota = new FeatureLayer({
-    //   url: "http://gis.dukcapil.kemendagri.go.id:6080/arcgis/rest/services/Data_022016_25082017/MapServer/1", 
-    //   popupTemplate: {
-    //     title: " PinterUsaha pada {giskemendagri.gisadmin.Kabupaten_Tabel_06072017.nama_kab_s}, {giskemendagri.gisadmin.Kabupaten_Tabel_06072017.nama_prop_}",
-    //     content: "Subscribe = " + "{expression/count-subsribe}" + ", Unsubscribe = " + "{expression/count-unsubscribe}",
-    //     expressionInfos: [
-    //       {
-    //         name: "count-subsribe",
-    //         title: "Jumlah Subsribe",
-    //         expression: arcadeCountSubscribe
-    //       },
-    //       {
-    //         name: "count-unsubscribe",
-    //         title: "Jumlah Unsubscribe",
-    //         expression: arcadeCountUnsubscribe
-    //       },
-    //     ]
-    //   },
-    //   visible: false,
-    // });
+    const batasKota = new FeatureLayer({
+      url: "http://gis.dukcapil.kemendagri.go.id:6080/arcgis/rest/services/Data_022016_25082017/MapServer/1", 
+      popupTemplate: {
+        title: " PinterUsaha pada {giskemendagri.gisadmin.Kabupaten_Tabel_06072017.nama_kab_s}, {giskemendagri.gisadmin.Kabupaten_Tabel_06072017.nama_prop_}",
+        content: "Subscribe = " + "{expression/count-subsribe}" + ", Unsubscribe = " + "{expression/count-unsubscribe}",
+        expressionInfos: [
+          {
+            name: "count-subsribe",
+            title: "Jumlah Subsribe",
+            expression: arcadeCountSubscribe
+          },
+          {
+            name: "count-unsubscribe",
+            title: "Jumlah Unsubscribe",
+            expression: arcadeCountUnsubscribe
+          },
+        ]
+      },
+      visible: false,
+    });
 
-    // const batasProvinsi = new FeatureLayer({
-    //   url: "http://gis.dukcapil.kemendagri.go.id:6080/arcgis/rest/services/Data_022016_25082017/MapServer/0",
-    //   popupTemplate: {
-    //     title: " PinterUsaha pada Provinsi {giskemendagri.gisadmin.Provinsi_baru.provinsi}",
-    //     content: "Subscribe = " + "{expression/count-subsribe}" + ", Unsubscribe = " + "{expression/count-unsubscribe}",
-    //     expressionInfos: [
-    //       {
-    //         name: "count-subsribe",
-    //         title: "Jumlah Subsribe",
-    //         expression: arcadeCountSubscribe
-    //       },
-    //       {
-    //         name: "count-unsubscribe",
-    //         title: "Jumlah Unsubscribe",
-    //         expression: arcadeCountUnsubscribe
-    //       },
-    //     ]
-    //   },
-    //   visible: false,
-    // });
+    const batasProvinsi = new FeatureLayer({
+      url: "http://gis.dukcapil.kemendagri.go.id:6080/arcgis/rest/services/Data_022016_25082017/MapServer/0",
+      popupTemplate: {
+        title: " PinterUsaha pada Provinsi {giskemendagri.gisadmin.Provinsi_baru.provinsi}",
+        content: "Subscribe = " + "{expression/count-subsribe}" + ", Unsubscribe = " + "{expression/count-unsubscribe}",
+        expressionInfos: [
+          {
+            name: "count-subsribe",
+            title: "Jumlah Subsribe",
+            expression: arcadeCountSubscribe
+          },
+          {
+            name: "count-unsubscribe",
+            title: "Jumlah Unsubscribe",
+            expression: arcadeCountUnsubscribe
+          },
+        ]
+      },
+      visible: false,
+    });
 
     const dataUmkm = new FeatureLayer({
       url: "https://services9.arcgis.com/13g8O389lHpxGSjb/arcgis/rest/services/dataUmkm/FeatureServer/0",
       featureReduction: clusterMerchant,
       outfields: ["*"],
-      // renderer: renderSymbol,
       popupTemplate: {
         title: "{nama_usaha}",
         content: [
@@ -485,12 +448,10 @@
       }
       
       let query = params.join(' OR ');
-      // debugger;
       floodLayerView.filter = {
         where: query
       };
-    }
-    // debugger;
+    };
 
     view.whenLayerView(merchantPinterusaha).then(function(layerView){
       floodLayerView = layerView;
@@ -520,7 +481,7 @@
     //--------------/filter by klasifikasi usaha -------------------
 
     //---------------------change basemap--------------------------------
-    var basemapGallery = new BasemapGallery({
+    const basemapGallery = new BasemapGallery({
       view: view,
       container: "basemapDiv",
       source: {
@@ -541,7 +502,6 @@
       }),
       "top-left"
     );
-    //--------------/change basemap--------------------------------
 
     //-------------------Map Legend & Disable/Enable Clustering---------------------
     const searchWidget = new Search({
@@ -562,7 +522,7 @@
           exactMatch: false,
           zoomScale: 7000,
           maxSuggestions: 10,
-        },
+        }
       ],
       includeDefaultSources: false,
       locationEnable: false,
@@ -574,6 +534,7 @@
       index: 0,
     });
     
+    //--------------------legend------------------------
     const legend = new Legend({
       view: view,
       container: "legendDiv",
@@ -600,6 +561,7 @@
       "top-left"
     );
 
+    //----------------cluster disable enable------------------------
     const toggleButton = document.getElementById("cluster");
     toggleButton.addEventListener("click", function () {
       let fr = merchantPinterusaha.featureReduction;
@@ -613,7 +575,6 @@
           ? "Disable Clustering"
           : "Enable Clustering";
     });
-    //-------------------/Map Legend & Disable/Enable Clustering---------------------
   });
 
 </script>
@@ -638,9 +599,9 @@
 <div id="viewDiv"></div>
 <div id="titleDiv" class="esri-widget">
   <span id="layerToggle" class="esri-widget">
-    <!-- <input type="checkbox" id="batasKecamatan" /> Batas Kecamatan<br>
+    <input type="checkbox" id="batasKecamatan" /> Batas Kecamatan<br>
     <input type="checkbox" id="batasKota" /> Batas Kota atau Kabupaten<br>
-    <input type="checkbox" id="batasProvinsi" /> Batas Provinsi<br> -->
+    <input type="checkbox" id="batasProvinsi" /> Batas Provinsi<br>
     <input type="checkbox" id="merchantPinterusaha" checked/> Merchant Terdaftar Pinterusaha<br>
     <input type="checkbox" id="dataUmkm" checked/> Database UMKM<br>
 </div>
