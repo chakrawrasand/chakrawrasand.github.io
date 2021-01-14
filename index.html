@@ -92,7 +92,7 @@
 
 <script type="text/arcgis-arcade" id="countSubsribe">
   var portal = Portal('https://wellcode.maps.arcgis.com/');
-  var merchant = FeatureSetByPortalItem(portal, 'd251e1df1415432bb348097a138868e9', 0, ['*'], true)
+  var merchant = FeatureSetByPortalItem(portal, 'c624a64eff614042bde75ca9eda04b1b', 0, ['*'], true)
   var keyword = 'yes'
   var filterKeyword = Filter(merchant,'subscribe = @keyword')
   var intersectArea = Intersects($feature, filterKeyword)
@@ -102,7 +102,7 @@
 
 <script type="text/arcgis-arcade" id="countUnsubscribe">
   var portal = Portal('https://wellcode.maps.arcgis.com/');
-  var merchant = FeatureSetByPortalItem(portal, 'd251e1df1415432bb348097a138868e9', 0, ['*'], true)
+  var merchant = FeatureSetByPortalItem(portal, 'c624a64eff614042bde75ca9eda04b1b', 0, ['*'], true)
   var keyword = 'no'
   var filterKeyword = Filter(merchant,'subscribe = @keyword')
   var intersectArea = Intersects($feature, filterKeyword)
@@ -112,12 +112,12 @@
 
 <script type="text/arcgis-arcade" id="maxUserStatus">
   var portal = Portal('https://wellcode.maps.arcgis.com/');
-  var merchantUnsub = FeatureSetByPortalItem(portal, 'd251e1df1415432bb348097a138868e9', 0, ['*'], true)
+  var merchantUnsub = FeatureSetByPortalItem(portal, 'c624a64eff614042bde75ca9eda04b1b', 0, ['*'], true)
   var keywordUnsub = 'no'
   var filterKeywordUnsub = Filter(merchantUnsub,'subscribe = @keywordUnsub')
   var intersectAreaUnsub = Intersects($feature, filterKeywordUnsub)
   var jumlahUnsub = count(intersectAreaUnsub)
-  var merchant = FeatureSetByPortalItem(portal, 'd251e1df1415432bb348097a138868e9', 0, ['*'], true)
+  var merchant = FeatureSetByPortalItem(portal, 'c624a64eff614042bde75ca9eda04b1b', 0, ['*'], true)
   var keyword = 'yes'
   var filterKeyword = Filter(merchant,'subscribe = @keyword')
   var intersectArea = Intersects($feature, filterKeyword)
@@ -131,12 +131,12 @@
 
 <script type="text/arcgis-arcade" id="persenSub">
   var portal = Portal('https://wellcode.maps.arcgis.com/');
-  var merchantUnsub = FeatureSetByPortalItem(portal, 'd251e1df1415432bb348097a138868e9', 0, ['*'], true)
+  var merchantUnsub = FeatureSetByPortalItem(portal, 'c624a64eff614042bde75ca9eda04b1b', 0, ['*'], true)
   var keywordUnsub = 'no'
   var filterKeywordUnsub = Filter(merchantUnsub,'subscribe = @keywordUnsub')
   var intersectAreaUnsub = Intersects($feature, filterKeywordUnsub)
   var jumlahUnsub = count(intersectAreaUnsub)
-  var merchant = FeatureSetByPortalItem(portal, 'd251e1df1415432bb348097a138868e9', 0, ['*'], true)
+  var merchant = FeatureSetByPortalItem(portal, 'c624a64eff614042bde75ca9eda04b1b', 0, ['*'], true)
   var keyword = 'yes'
   var filterKeyword = Filter(merchant,'subscribe = @keyword')
   var intersectArea = Intersects($feature, filterKeyword)
@@ -378,7 +378,7 @@
 
     const map = new Map({
       basemap: "streets-navigation-vector",
-      layers: [merchantPinterusaha, dataUmkm]
+      layers: [merchantPinterusaha, dataUmkm, batasKecamatan, batasKota, batasProvinsi]
     });
     
     //------------- /call mapservice layer & arcade count -------------------
@@ -391,6 +391,21 @@
       ui: {
         components: ["attribution"]
       }
+    });
+
+    var batasKotaToggle = document.getElementById("batasKota");
+    batasKotaToggle.addEventListener("change", function () {
+      batasKota.visible = batasKotaToggle.checked;
+    });
+
+    var batasKecamatanToggle = document.getElementById("batasKecamatan");
+    batasKecamatanToggle.addEventListener("change", function () {
+      batasKecamatan.visible = batasKecamatanToggle.checked;
+    });
+
+    var batasProvinsiToggle = document.getElementById("batasProvinsi");
+    batasProvinsiToggle.addEventListener("change", function () {
+      batasProvinsi.visible = batasProvinsiToggle.checked;
     });
 
     var merchantPinterusahaToggle = document.getElementById("merchantPinterusaha");
